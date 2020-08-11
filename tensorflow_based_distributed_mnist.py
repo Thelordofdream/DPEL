@@ -53,24 +53,24 @@ with strategy.scope():
                   metrics=[tf.keras.metrics.sparse_categorical_accuracy])
 
 # 定义检查点（checkpoint）目录以存储检查点（checkpoints）
-checkpoint_dir = './training_checkpoints'
+# checkpoint_dir = './training_checkpoints'
 # 检查点（checkpoint）文件的名称
-checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
+# checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
 
 
 # 在每个 epoch 结束时打印LR的回调（callbacks）。
-class PrintLR(tf.keras.callbacks.Callback):
-  def on_epoch_end(self, epoch, logs=None):
-    print('\nLearning rate for epoch {} is {}'.format(epoch + 1, model.optimizer.lr))
+# class PrintLR(tf.keras.callbacks.Callback):
+#   def on_epoch_end(self, epoch, logs=None):
+#     print('\nLearning rate for epoch {} is {}'.format(epoch + 1, model.optimizer.lr))
 
 
-callbacks = [
-    tf.keras.callbacks.TensorBoard(log_dir='./logs'),
-    tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_prefix,
-                                       save_weights_only=True),
+# callbacks = [
+#     tf.keras.callbacks.TensorBoard(log_dir='./logs'),
+#     tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_prefix,
+#                                        save_weights_only=True),
     # PrintLR()
-]
+# ]
 
 # model.fit(train_dataset, epochs=100, callbacks=callbacks)
 model.fit(train_dataset, epochs=100)
-
+model.save("tensorflow_mnist_model.ckpt")

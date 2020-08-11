@@ -110,10 +110,9 @@ for epoch in range(100):
     #                                                                                       data_train),
     #                                                                                   100 * testing_correct / len(
     #                                                                                       data_test)))
-    int(len(data_train))
     print("Loss is:{:.4f}, Train Accuracy is:{:.2f}%, Test Accuracy is:{:.2f}%, Cost Time is:{:.3f}s".format(running_loss / step,
                                                                                   100 * running_correct / len(data_train) * 2,
                                                                                   100 * testing_correct / len(data_test),
                                                                                   time.time() - s))
     print("-" * 10)
-torch.save(model.module.state_dict(), "model_parameter.pth")
+torch.save(model.module.state_dict(), "pytorch_mnist_model.pth")
