@@ -6,7 +6,7 @@ A Distribution Programming Example Library of Popular Deep Learning Frameworks
 
 ```python
 python -m torch.distributed.launch --nproc_per_node=GPU_ms pytorch_based_distributed_mnist.py
-`
+```
 
 ## Tensorflow
 
