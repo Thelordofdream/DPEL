@@ -52,7 +52,7 @@ class Model(torch.nn.Module):
 
 
 model = Model().cuda()
-cost = torch.nn.CrossEntropyLoss()
+cost = torch.nn.CrossEntropyLoss().cuda()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
 
 for epoch in range(100):
@@ -67,7 +67,7 @@ for epoch in range(100):
         outputs = model(train_image)
         _, pred = torch.max(outputs.data, 1)
         optimizer.zero_grad()
-        loss = cost(outputs, train_target).cuda()
+        loss = cost(outputs, train_target)
 
         loss.backward()
         optimizer.step()
@@ -85,7 +85,7 @@ for epoch in range(100):
         testing_correct += torch.sum(pred == test_target.data)
 
     print("Loss is:{:.4f}, Train Accuracy is:{:.2f}%, Test Accuracy is:{:.2f}%, Cost Time is:{:.3f}s".format(running_loss / step,
-                                                                                  100 * running_correct / len(data_train) * 2,
+                                                                                  100 * running_correct / len(data_train),
                                                                                   100 * testing_correct / len(data_test),
                                                                                   e - s))
 torch.save(model.module.state_dict(), "pytorch_single_mnist_model.pth")

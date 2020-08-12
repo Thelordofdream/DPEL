@@ -75,7 +75,7 @@ class Model(torch.nn.Module):
 
 model = Model()
 model = torch.nn.parallel.DistributedDataParallel(model.to(args.local_rank), device_ids=[args.local_rank])
-cost = torch.nn.CrossEntropyLoss()
+cost = torch.nn.CrossEntropyLoss().to(args.local_rank)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
 
 for epoch in range(100):
@@ -90,7 +90,7 @@ for epoch in range(100):
         outputs = model(train_image)
         _, pred = torch.max(outputs.data, 1)
         optimizer.zero_grad()
-        loss = cost(outputs, train_target).cuda()
+        loss = cost(outputs, train_target)
 
         loss.backward()
         optimizer.step()
