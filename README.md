@@ -19,6 +19,7 @@ python tensorflow_based_distributed_mnist.py
 
 * Dataset: MNIST
 * Period: 1 Epoch
+* Backend: NCCL
 * Batch size per GPU for training: 9000
 * No validation
 
