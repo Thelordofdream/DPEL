@@ -105,14 +105,10 @@ for epoch in range(100):
         outputs = model(test_image)
         _, pred = torch.max(outputs.data, 1)
         testing_correct += torch.sum(pred == test_target.data)
-    # print("Loss is:{:.4f}, Train Accuracy is:{:.4f}%, Test Accuracy is:{:.4f}".format(running_loss / len(data_train),
-    #                                                                                   100 * running_correct / len(
-    #                                                                                       data_train),
-    #                                                                                   100 * testing_correct / len(
-    #                                                                                       data_test)))
+
     print("Loss is:{:.4f}, Train Accuracy is:{:.2f}%, Test Accuracy is:{:.2f}%, Cost Time is:{:.3f}s".format(running_loss / step,
                                                                                   100 * running_correct / len(data_train) * 2,
                                                                                   100 * testing_correct / len(data_test),
                                                                                   time.time() - s))
     print("-" * 10)
-torch.save(model.module.state_dict(), "pytorch_mnist_model.pth")
+torch.save(model.module.state_dict(), "pytorch_distributed_mnist_model.pth")

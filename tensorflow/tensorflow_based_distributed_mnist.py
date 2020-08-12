@@ -1,6 +1,5 @@
 import tensorflow_datasets as tfds
 import tensorflow as tf
-tfds.disable_progress_bar()
 import os
 os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
 
@@ -8,13 +7,8 @@ datasets, info = tfds.load(name='mnist', with_info=True, as_supervised=True)
 
 mnist_train, mnist_test = datasets['train'], datasets['test']
 
-strategy = tf.distribute.MirroredStrategy()
-# strategy = tf.distribute.MirroredStrategy(cross_device_ops=tf.distribute.HierarchicalCopyAllReduce())
-# strategy = tf.distribute.MirroredStrategy(cross_device_ops=tf.distribute.NcclAllReduce())
+strategy = tf.distribute.MirroredStrategy()  # Default Mode: tf.distribute.NcclAllReduce()
 print('Number of devices: {}'.format(strategy.num_replicas_in_sync))
-
-# 您还可以执行 info.splits.total_num_examples 来获取总数
-# 数据集中的样例数量。
 
 num_train_examples = info.splits['train'].num_examples
 num_test_examples = info.splits['test'].num_examples
@@ -52,25 +46,5 @@ with strategy.scope():
                   optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
                   metrics=[tf.keras.metrics.sparse_categorical_accuracy])
 
-# 定义检查点（checkpoint）目录以存储检查点（checkpoints）
-# checkpoint_dir = './training_checkpoints'
-# 检查点（checkpoint）文件的名称
-# checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
-
-
-# 在每个 epoch 结束时打印LR的回调（callbacks）。
-# class PrintLR(tf.keras.callbacks.Callback):
-#   def on_epoch_end(self, epoch, logs=None):
-#     print('\nLearning rate for epoch {} is {}'.format(epoch + 1, model.optimizer.lr))
-
-
-# callbacks = [
-#     tf.keras.callbacks.TensorBoard(log_dir='./logs'),
-#     tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_prefix,
-#                                        save_weights_only=True),
-    # PrintLR()
-# ]
-
-# model.fit(train_dataset, epochs=100, callbacks=callbacks)
-model.fit(train_dataset, epochs=100)
-model.save("tensorflow_mnist_model.ckpt")
+model.fit(train_dataset, validation_data=eval_dataset, epochs=100)
+model.save("tensorflow_distributed_mnist_model.ckpt")
