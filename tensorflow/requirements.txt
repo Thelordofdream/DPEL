@@ -1,0 +1,5 @@
+tensorflow>=1.15.2
+tensorflow_datasets>=1.3.2
+CUDA>=10.0
+cuDNN>=7.6.5
+NCCL>=2.6.4

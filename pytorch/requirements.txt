@@ -1,0 +1,5 @@
+torch>=1.6.0
+torchvision>=0.7.0
+CUDA>=10.0
+cuDNN>=7.6.5
+NCCL>=2.6.4

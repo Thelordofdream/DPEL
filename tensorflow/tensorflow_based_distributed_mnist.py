@@ -26,8 +26,8 @@ def scale(image, label):
   return image, label
 
 
-train_dataset = mnist_train.map(scale).cache().shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
-eval_dataset = mnist_test.map(scale).batch(BATCH_SIZE)
+train_dataset = mnist_train.map(scale).cache().shuffle(BUFFER_SIZE).repeat().batch(BATCH_SIZE)
+eval_dataset = mnist_test.map(scale).repeat().repeat().batch(4000)
 
 with strategy.scope():
     model = tf.keras.Sequential([
@@ -46,5 +46,5 @@ with strategy.scope():
                   optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
                   metrics=[tf.keras.metrics.sparse_categorical_accuracy])
 
-model.fit(train_dataset, validation_data=eval_dataset, epochs=100)
+model.fit(train_dataset, validation_data=eval_dataset, steps_per_epoch=int(num_train_examples/BATCH_SIZE+1), validation_steps=int(num_train_examples/BATCH_SIZE+1), epochs=100)
 model.save("tensorflow_distributed_mnist_model.ckpt")

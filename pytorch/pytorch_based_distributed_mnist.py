@@ -110,5 +110,4 @@ for epoch in range(100):
                                                                                   100 * running_correct / len(data_train) * 2,
                                                                                   100 * testing_correct / len(data_test),
                                                                                   time.time() - s))
-    print("-" * 10)
 torch.save(model.module.state_dict(), "pytorch_distributed_mnist_model.pth")
