@@ -97,6 +97,7 @@ for epoch in range(100):
         running_loss += loss.item()
         running_correct += torch.sum(pred == train_target.data)
         step += 1
+    e = time.time()
 
     testing_correct = 0
     for test_image, test_target in data_loader_test:
@@ -109,5 +110,5 @@ for epoch in range(100):
     print("Loss is:{:.4f}, Train Accuracy is:{:.2f}%, Test Accuracy is:{:.2f}%, Cost Time is:{:.3f}s".format(running_loss / step,
                                                                                   100 * running_correct / len(data_train) * 2,
                                                                                   100 * testing_correct / len(data_test),
-                                                                                  time.time() - s))
+                                                                                  e - s))
 torch.save(model.module.state_dict(), "pytorch_distributed_mnist_model.pth")
