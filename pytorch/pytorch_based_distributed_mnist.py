@@ -90,11 +90,11 @@ for epoch in range(100):
         outputs = model(train_image)
         _, pred = torch.max(outputs.data, 1)
         optimizer.zero_grad()
-        loss = cost(outputs, train_target)
+        loss = cost(outputs, train_target).cuda()
 
         loss.backward()
         optimizer.step()
-        running_loss += loss
+        running_loss += loss.item()
         running_correct += torch.sum(pred == train_target.data)
         step += 1
 
